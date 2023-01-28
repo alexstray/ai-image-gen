@@ -6,17 +6,17 @@ dotenv.config();
 
 const router = express.Router();
 
-const configration = new Configuration({
+const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
-})
-
-const openai = new OpenAIApi(configration);
-
-router.route('/').get((req, res) => {
-    res.send('hello from ai')
 });
 
-router.route('/').post(async (req, res) => {
+const openai = new OpenAIApi(configuration);
+
+router.route('/').get((req, res) => {
+    res.send('hello from ai 2')
+});
+
+router.route('/').post( async (req, res) => {
     try {
         const { prompt } = req.body;
 
@@ -29,10 +29,10 @@ router.route('/').post(async (req, res) => {
 
         const image = aiResponse.data.data[0].b64_json;
 
-        res.status(200).json({ photo: image })
+        res.status(200).json({ photo: image });
     } catch (error) {
         console.log(error);
-        res.status(500).send(error?.response.data.error.message);
+        res.statusMessage(500).send(error?.response.data.error.message);
     }
 })
 

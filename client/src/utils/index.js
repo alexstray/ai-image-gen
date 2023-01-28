@@ -6,6 +6,5 @@ export function getRandomPrompt(prompt) {
 
     if(randomPrompt === prompt) return getRandomPrompt(prompt);
 
-
     return randomPrompt;
 }
