@@ -39,8 +39,31 @@ const CreatePost = () => {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    if (form.prompt && form.photo) {
+      setLoading(true);
+
+      try {
+        const response = await fetch('http://localhost:8080/api/v1/posts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'image/jpeg',
+          },
+          body: JSON.stringify(form)
+        })
+
+        await response.json();
+        navigate('/');
+      } catch (err) {
+        alert(err)
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert('Please enter a prompt and generate an image');
+    }
   }
 
   const handleChange = (e) => {
@@ -57,7 +80,9 @@ const CreatePost = () => {
     <section className='max-w-7xl mx-auto'>
       <div>
         <h1 className='font-extrabold text-[#222328] text-[32px]'>Create</h1>
-        <p className='mt-2 text-[#666e75] text-[16px] max-w-[500px]'>Create imaginative and visually stunning images through AI and share them with the community.</p>
+        <p className='mt-2 text-[#666e75] text-[16px] max-w-[500px]'>Create imaginative and visually stunning images through AI and share them with the community. <br/>
+        **This Generator's API is a work in progress. It may fail to fetch or not show a photo**
+        </p>
       </div>
 
       <form className='mt-16 max-w-3xl' onSubmit={handleSubmit}>

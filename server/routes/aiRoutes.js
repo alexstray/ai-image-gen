@@ -13,13 +13,14 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 router.route('/').get((req, res) => {
-    res.send('hello from ai 2')
+    res.status(200).json({ message: 'Hello from AI' });
 });
 
 router.route('/').post( async (req, res) => {
+    
     try {
         const { prompt } = req.body;
-
+        
         const aiResponse = await openai.createImage({
             prompt,
             n: 1,
@@ -32,7 +33,7 @@ router.route('/').post( async (req, res) => {
         res.status(200).json({ photo: image });
     } catch (error) {
         console.log(error);
-        res.status(500).send(error?.response.data.error.message);
+        res.status(500).json({ message: 'Something went wrong' });
     }
 })
 
